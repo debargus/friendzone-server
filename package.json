@@ -1,0 +1,53 @@
+{
+    "name": "seed-server",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "author": {
+        "email": "iamdebadipti@gmail.com",
+        "name": "iamdebadipti"
+    },
+    "scripts": {
+        "watch": "tsc -w",
+        "develop": "nodemon ./build/index.js",
+        "build": "rm -rf ./build && tsc",
+        "start": "NODE_PATH=./build node ./build/index.js",
+        "format": "prettier --config .prettierrc --write './**/*.{ts,js,css,scss,json,md}'",
+        "migrations:create": "npx typeorm migration:create -n",
+        "migrations:generate": "npx typeorm migration:generate -n",
+        "migrations:run": "npx typeorm migration:run",
+        "migrations:revert": "npx typeorm migration:revert"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@types/cookie-parser": "^1.4.3",
+        "@types/cors": "^2.8.12",
+        "@types/dotenv": "^8.2.0",
+        "@types/express": "^4.17.13",
+        "@types/jsonwebtoken": "^8.5.8",
+        "@types/morgan": "^1.9.3",
+        "@types/node": "^17.0.25",
+        "@types/nodemailer": "^6.4.4",
+        "nodemon": "^2.0.15",
+        "prettier": "^2.6.2",
+        "typescript": "^4.6.3"
+    },
+    "dependencies": {
+        "@types/bcrypt": "^5.0.0",
+        "aws-sdk": "^2.1120.0",
+        "bcrypt": "^5.0.1",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.3",
+        "express-validator": "^6.14.0",
+        "helmet": "^5.0.2",
+        "jsonwebtoken": "^8.5.1",
+        "morgan": "^1.10.0",
+        "nanoid": "^3.3.3",
+        "nodemailer": "^6.7.3",
+        "pg": "^8.7.3",
+        "slugify": "^1.6.5",
+        "typeorm": "^0.3.6"
+    }
+}
