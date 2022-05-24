@@ -8,7 +8,7 @@ import { Upvote } from '../../entity/upvote/Upvote'
 import { Downvote } from '../../entity/downvote/Downvote'
 
 export const downvote = async (req: Request, res: Response, next: NextFunction) => {
-    const { post_id } = req.body
+    const { id: post_id } = req.params
     const { jwtPayload } = req
 
     const userRepository = db.getRepository(User)
@@ -57,8 +57,6 @@ export const downvote = async (req: Request, res: Response, next: NextFunction) 
         }
 
         const newDownvote = new Downvote()
-        newDownvote.post_id = post_id
-        newDownvote.author_id = user.id
         newDownvote.post = post
         newDownvote.author = user
 

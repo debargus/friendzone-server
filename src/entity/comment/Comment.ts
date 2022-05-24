@@ -12,7 +12,7 @@ import { Post } from '../post/Post'
 import { User } from '../user/User'
 
 @Entity()
-export class Upvote extends BaseEntity {
+export class Comment extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
@@ -24,11 +24,14 @@ export class Upvote extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date
 
-    @ManyToOne(() => Post, (post) => post.upvotes, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'post_id' })
-    post: Post
+    @Column()
+    comment_text: string
 
-    @ManyToOne(() => User, (user) => user.upvotes, { onDelete: 'CASCADE' })
+    @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'author_id' })
     author: User
+
+    @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'post_id' })
+    post: Post
 }

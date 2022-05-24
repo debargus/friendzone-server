@@ -43,11 +43,12 @@ export class Group extends BaseEntity {
     @Column({ default: 0, select: false })
     join_request_count: number
 
-    @Column({ type: 'simple-array', select: false })
-    admins: string[]
-
-    @OneToMany(() => Post, (post) => post.group, { onDelete: 'CASCADE' })
+    @OneToMany(() => Post, (post) => post.group)
     posts: Post[]
+
+    @ManyToMany(() => User)
+    @JoinTable()
+    admins: User[]
 
     @ManyToMany(() => User)
     @JoinTable()

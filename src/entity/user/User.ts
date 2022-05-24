@@ -11,6 +11,8 @@ import {
 import { Downvote } from '../downvote/Downvote'
 import { Post } from '../post/Post'
 import { Upvote } from '../upvote/Upvote'
+import { Comment } from '../comment/Comment'
+import { Hot } from '../hot/Hot'
 
 @Entity()
 export class User extends BaseEntity {
@@ -43,14 +45,20 @@ export class User extends BaseEntity {
     @Column({ nullable: true })
     avatar: string
 
-    @OneToMany(() => Post, (post) => post.author, { onDelete: 'CASCADE' })
+    @OneToMany(() => Post, (post) => post.author)
     posts: Post[]
 
-    @OneToMany(() => Upvote, (upvote) => upvote.author, { onDelete: 'CASCADE' })
+    @OneToMany(() => Upvote, (upvote) => upvote.author)
     upvotes: Upvote[]
 
-    @OneToMany(() => Downvote, (downvotes) => downvotes.author, { onDelete: 'CASCADE' })
+    @OneToMany(() => Downvote, (downvotes) => downvotes.author)
     downvotes: Downvote[]
+
+    @OneToMany(() => Comment, (comment) => comment.author)
+    comments: Comment[]
+
+    @OneToMany(() => Hot, (hot) => hot.post)
+    hots: Hot[]
 
     saveHashedPassword(password: string) {
         this.password = bcrypt.hashSync(password, 8)

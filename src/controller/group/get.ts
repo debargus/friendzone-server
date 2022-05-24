@@ -15,7 +15,7 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
             .where('group.id = :id', { id })
             .addSelect('group.description')
             .leftJoinAndSelect('group.members', 'members')
-            // .leftJoinAndSelect('group.join_requests', 'join_requests')
+            .leftJoinAndSelect('group.admins', 'admins')
             .getOne()
 
         if (!group) {

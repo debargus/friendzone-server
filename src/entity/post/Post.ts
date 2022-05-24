@@ -6,10 +6,13 @@ import {
     UpdateDateColumn,
     BaseEntity,
     OneToMany,
-    ManyToOne
+    ManyToOne,
+    JoinColumn
 } from 'typeorm'
+import { Comment } from '../comment/Comment'
 import { Downvote } from '../downvote/Downvote'
 import { Group } from '../group/Group'
+import { Hot } from '../hot/Hot'
 import { Upvote } from '../upvote/Upvote'
 import { User } from '../user/User'
 
@@ -29,30 +32,35 @@ export class Post extends BaseEntity {
     @Column()
     content: string
 
-    @Column()
-    author_id: string
-
-    @Column()
-    group_id: string
-
     @Column({ default: 0 })
     upvotes_count: number
 
     @Column({ default: 0 })
     downvotes_count: number
 
+    @Column({ default: 0 })
+    hots_count: number
+
     @Column({ default: false })
     is_public: boolean
 
-    @ManyToOne(() => User, (user) => user.posts)
+    @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'author_id' })
     author: User
 
-    @ManyToOne(() => Group, (group) => group.posts)
+    @ManyToOne(() => Group, (group) => group.posts, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'group_id' })
     group: Group
 
-    @OneToMany(() => Upvote, (upvote) => upvote.post, { onDelete: 'CASCADE' })
+    @OneToMany(() => Upvote, (upvote) => upvote.post)
     upvotes: Upvote[]
 
-    @OneToMany(() => Downvote, (downvote) => downvote.post, { onDelete: 'CASCADE' })
+    @OneToMany(() => Downvote, (downvote) => downvote.post)
     downvotes: Downvote[]
+
+    @OneToMany(() => Comment, (comment) => comment.post)
+    comments: Comment[]
+
+    @OneToMany(() => Hot, (hot) => hot.post)
+    hots: Hot[]
 }

@@ -17,6 +17,7 @@ export const getAllPublicGroupPosts = async (req: Request, res: Response, next: 
             .andWhere('post.is_public = :is_public', { is_public: true })
             .innerJoinAndSelect('post.author', 'author')
             .innerJoinAndSelect('post.group', 'group')
+            .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
             .getMany()
 
         res.customSuccess(200, '', { posts })

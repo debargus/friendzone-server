@@ -10,7 +10,10 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
     const userRepository = db.getRepository(User)
 
     try {
-        const user = await userRepository.createQueryBuilder('user').where('user.id = :id', { id }).getOne()
+        const user = await userRepository
+            .createQueryBuilder('user')
+            .where('user.username = :username', { username: id })
+            .getOne()
 
         if (!user) {
             const customError = new ErrorResponse(404, 'user not found')

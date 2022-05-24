@@ -4,7 +4,7 @@ import { ErrorResponse } from '../../utils/response/errorResponse'
 import { db } from '../../db'
 import { Group } from '../../entity/group/Group'
 
-export const approveJoin = async (req: Request, res: Response, next: NextFunction) => {
+export const declineJoin = async (req: Request, res: Response, next: NextFunction) => {
     const { group_id, request_user_id } = req.body
     const { jwtPayload } = req
 
@@ -34,20 +34,18 @@ export const approveJoin = async (req: Request, res: Response, next: NextFunctio
 
         const updatedRequests = group.join_requests.filter((member) => member.id !== request_user_id)
 
-        group.members.unshift(requestingUserArr[0])
         group.join_requests = updatedRequests
         group.join_request_count = updatedRequests.length
-        group.members_count = group.members.length
 
         try {
             await groupRepository.save(group)
-            res.customSuccess(200, 'user request approved')
+            res.customSuccess(200, 'user request declined')
         } catch (err) {
-            const customError = new ErrorResponse(500, 'group approval failed')
+            const customError = new ErrorResponse(500, 'group decline failed')
             return next(customError)
         }
     } catch (err) {
-        const customError = new ErrorResponse(500, 'group approval failed', err)
+        const customError = new ErrorResponse(500, 'group decline failed', err)
         return next(customError)
     }
 }

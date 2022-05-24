@@ -14,6 +14,7 @@ export const getPopularPublicPosts = async (_: Request, res: Response, next: Nex
             .andWhere('post.is_public = :is_public', { is_public: true })
             .leftJoinAndSelect('post.author', 'author')
             .leftJoinAndSelect('post.group', 'group')
+            .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
             .getMany()
 
         res.customSuccess(200, '', { posts })

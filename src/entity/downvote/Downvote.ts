@@ -5,7 +5,8 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     BaseEntity,
-    ManyToOne
+    ManyToOne,
+    JoinColumn
 } from 'typeorm'
 import { Post } from '../post/Post'
 import { User } from '../user/User'
@@ -23,15 +24,11 @@ export class Downvote extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date
 
-    @Column()
-    post_id: string
-
-    @Column()
-    author_id: string
-
-    @ManyToOne(() => Post, (post) => post.downvotes)
+    @ManyToOne(() => Post, (post) => post.downvotes, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'post_id' })
     post: Post
 
-    @ManyToOne(() => User, (user) => user.downvotes)
+    @ManyToOne(() => User, (user) => user.downvotes, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'author_id' })
     author: User
 }

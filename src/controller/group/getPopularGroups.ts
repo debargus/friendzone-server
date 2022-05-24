@@ -8,7 +8,11 @@ export const getPopularGroups = async (_: Request, res: Response, next: NextFunc
     const groupRepository = db.getRepository(Group)
 
     try {
-        const groups = await groupRepository.createQueryBuilder('group').getMany()
+        const groups = await groupRepository
+            .createQueryBuilder('group')
+            .orderBy('group.members_count', 'DESC')
+            .getMany()
+
         res.customSuccess(200, '', { groups })
     } catch (err) {
         const customError = new ErrorResponse(500, 'failed to get popular groups', err)

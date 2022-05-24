@@ -20,16 +20,30 @@ export const getPopularPosts = async (req: Request, res: Response, next: NextFun
 
         const userGroupIds = userGroups.map((group) => group.id)
 
-        const posts = await postRepository
-            .createQueryBuilder('post')
-            .orderBy('post.created_at', 'DESC')
-            .where('post.is_public = :is_public', { is_public: true })
-            .orWhere('post.group_id IN (:...group_ids)', { group_ids: userGroupIds })
-            .leftJoinAndSelect('post.author', 'author')
-            .leftJoinAndSelect('post.group', 'group')
-            .getMany()
+        if (userGroupIds.length) {
+            const posts = await postRepository
+                .createQueryBuilder('post')
+                .orderBy('post.created_at', 'DESC')
+                .where('post.is_public = :is_public', { is_public: true })
+                .orWhere('post.group_id IN (:...group_ids)', { group_ids: userGroupIds })
+                .leftJoinAndSelect('post.author', 'author')
+                .leftJoinAndSelect('post.group', 'group')
+                .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
+                .getMany()
 
-        res.customSuccess(200, '', { posts })
+            res.customSuccess(200, '', { posts })
+        } else {
+            const posts = await postRepository
+                .createQueryBuilder('post')
+                .orderBy('post.created_at', 'DESC')
+                .andWhere('post.is_public = :is_public', { is_public: true })
+                .leftJoinAndSelect('post.author', 'author')
+                .leftJoinAndSelect('post.group', 'group')
+                .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
+                .getMany()
+
+            res.customSuccess(200, '', { posts })
+        }
     } catch (err) {
         const customError = new ErrorResponse(500, 'failed to get post', err)
         return next(customError)

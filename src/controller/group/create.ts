@@ -31,11 +31,11 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
         newGroup.cover_image = cover_image
         newGroup.members_count = 1
         newGroup.members = [user]
-        newGroup.admins = [user.id]
+        newGroup.admins = [user]
 
         try {
-            await groupRepository.save(newGroup)
-            res.customSuccess(200, 'group created successfully')
+            const group = await groupRepository.save(newGroup)
+            res.customSuccess(200, 'group created successfully', { group: { id: group.id } })
         } catch (err) {
             const customError = new ErrorResponse(600, 'group not created', err)
             return next(customError)

@@ -15,8 +15,9 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
             .where('post.id = :id', { id })
             .leftJoinAndSelect('post.author', 'author')
             .leftJoinAndSelect('post.group', 'group')
-            .leftJoinAndSelect('post.upvotes', 'upvotes')
-            .leftJoinAndSelect('post.downvotes', 'downvotes')
+            .leftJoinAndSelect('post.comments', 'comments')
+            .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
+            .leftJoinAndSelect('comments.author', 'comment_author')
             .getOne()
 
         if (!post) {

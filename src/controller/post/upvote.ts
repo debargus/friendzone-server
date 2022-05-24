@@ -8,13 +8,15 @@ import { Upvote } from '../../entity/upvote/Upvote'
 import { Downvote } from '../../entity/downvote/Downvote'
 
 export const upvote = async (req: Request, res: Response, next: NextFunction) => {
-    const { post_id } = req.body
+    const { id: post_id } = req.params
     const { jwtPayload } = req
 
     const userRepository = db.getRepository(User)
     const postRepository = db.getRepository(Post)
     const upvoteRepository = db.getRepository(Upvote)
     const downvoteRepository = db.getRepository(Downvote)
+
+    console.log('hellop')
 
     try {
         const user = await userRepository
@@ -57,8 +59,6 @@ export const upvote = async (req: Request, res: Response, next: NextFunction) =>
         }
 
         const newUpvote = new Upvote()
-        newUpvote.post_id = post_id
-        newUpvote.author_id = user.id
         newUpvote.post = post
         newUpvote.author = user
 

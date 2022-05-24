@@ -25,9 +25,9 @@ export const requestJoin = async (req: Request, res: Response, next: NextFunctio
 
         const group = await groupRepository
             .createQueryBuilder('group')
-            .where('group.id = :id', { id: group_id })
             .leftJoinAndSelect('group.join_requests', 'join_requests')
-            .addSelect('group.admins')
+            .leftJoinAndSelect('group.admins', 'admin')
+            .where('group.id = :id', { id: group_id })
             .getOne()
 
         if (!group) {
@@ -35,14 +35,9 @@ export const requestJoin = async (req: Request, res: Response, next: NextFunctio
             return next(customError)
         }
 
-        const alreadyJoined = group.join_requests.filter((member) => member.id === user.id)
+        const isAdmin = group.admins.filter((user) => user.id === jwtPayload.id)
 
-        if (alreadyJoined.length) {
-            const customError = new ErrorResponse(400, 'already sent join request')
-            return next(customError)
-        }
-
-        if (group.admins.includes(user.id)) {
+        if (isAdmin.length) {
             const customError = new ErrorResponse(400, 'already a member')
             return next(customError)
         }

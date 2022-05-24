@@ -40,8 +40,6 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
 
         const newPost = new Post()
         newPost.content = content
-        newPost.author_id = user.id
-        newPost.group_id = group.id
         newPost.author = user
         newPost.group = group
 
