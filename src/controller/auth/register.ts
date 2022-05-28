@@ -13,7 +13,11 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const userRepository = db.getRepository(User)
 
     try {
-        const user = await userRepository.createQueryBuilder('user').where('user.email = :email', { email }).getOne()
+        const user = await userRepository
+            .createQueryBuilder('user')
+            .where('user.email = :email', { email })
+            .orWhere('user.username = :username', { username })
+            .getOne()
 
         if (user) {
             const customError = new ErrorResponse(400, 'user already exists')

@@ -8,6 +8,9 @@ export type User = {
     password: string
     name: string
     avatar: string | null
+    cover_image: string
+    description: string
+    dob: Date
 }
 
 export type UserRegisterArgs = {
@@ -20,4 +23,13 @@ export type UserRegisterArgs = {
 export type UserLoginArgs = {
     username: string
     password: string
+}
+
+export type ProfileUpdateArgs = {
+    name?: string
+    username?: string
+    avatar?: string
+    cover_image?: string
+    description?: string
+    dob?: Date
 }

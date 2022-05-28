@@ -17,7 +17,6 @@ export const getAllGroupPosts = async (req: Request, res: Response, next: NextFu
             .innerJoinAndSelect('post.author', 'author')
             .innerJoinAndSelect('post.group', 'group')
             .innerJoinAndSelect('group.members', 'member')
-            .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
             .where('post.group_id = :group_id', { group_id: id })
             .andWhere('member.id = :member_id', { member_id: jwtPayload.id })
             .getMany()
@@ -33,7 +32,6 @@ export const getAllGroupPosts = async (req: Request, res: Response, next: NextFu
             .andWhere('post.is_public = :is_public', { is_public: true })
             .innerJoinAndSelect('post.author', 'author')
             .innerJoinAndSelect('post.group', 'group')
-            .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
             .getMany()
 
         res.customSuccess(200, '', { posts: publicPosts })

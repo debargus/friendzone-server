@@ -39,10 +39,16 @@ export class Post extends BaseEntity {
     downvotes_count: number
 
     @Column({ default: 0 })
+    comments_count: number
+
+    @Column({ default: 0 })
     hots_count: number
 
     @Column({ default: false })
     is_public: boolean
+
+    @Column({ default: false })
+    is_updated: boolean
 
     @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'author_id' })

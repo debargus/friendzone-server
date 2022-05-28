@@ -36,9 +36,11 @@ export const postComment = async (req: Request, res: Response, next: NextFunctio
         newComment.comment_text = comment_text
         newComment.author = user
         newComment.post = post
+        post.comments_count += 1
 
         try {
             const comment = await commentRepository.save(newComment)
+            await postRepository.save(post)
             res.customSuccess(200, 'comment created', { comment })
         } catch (err) {
             const customError = new ErrorResponse(500, 'comment not created', err)

@@ -13,6 +13,7 @@ import { Post } from '../post/Post'
 import { Upvote } from '../upvote/Upvote'
 import { Comment } from '../comment/Comment'
 import { Hot } from '../hot/Hot'
+import { UserFollow } from '../follow/UserFollow'
 
 @Entity()
 export class User extends BaseEntity {
@@ -45,6 +46,15 @@ export class User extends BaseEntity {
     @Column({ nullable: true })
     avatar: string
 
+    @Column({ nullable: true, select: false })
+    cover_image: string
+
+    @Column({ nullable: true, select: false })
+    description: string
+
+    @Column({ nullable: true, select: false })
+    dob: Date
+
     @OneToMany(() => Post, (post) => post.author)
     posts: Post[]
 
@@ -59,6 +69,12 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Hot, (hot) => hot.post)
     hots: Hot[]
+
+    @OneToMany(() => UserFollow, (follow) => follow.following)
+    followers: UserFollow[]
+
+    @OneToMany(() => UserFollow, (follow) => follow.follower)
+    followings: UserFollow[]
 
     saveHashedPassword(password: string) {
         this.password = bcrypt.hashSync(password, 8)

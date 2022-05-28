@@ -28,7 +28,6 @@ export const getPopularPosts = async (req: Request, res: Response, next: NextFun
                 .orWhere('post.group_id IN (:...group_ids)', { group_ids: userGroupIds })
                 .leftJoinAndSelect('post.author', 'author')
                 .leftJoinAndSelect('post.group', 'group')
-                .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
                 .getMany()
 
             res.customSuccess(200, '', { posts })
@@ -39,7 +38,6 @@ export const getPopularPosts = async (req: Request, res: Response, next: NextFun
                 .andWhere('post.is_public = :is_public', { is_public: true })
                 .leftJoinAndSelect('post.author', 'author')
                 .leftJoinAndSelect('post.group', 'group')
-                .loadRelationCountAndMap('post.comments_count', 'post.comments', 'comments_count')
                 .getMany()
 
             res.customSuccess(200, '', { posts })

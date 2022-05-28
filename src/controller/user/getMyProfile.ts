@@ -4,7 +4,7 @@ import { ErrorResponse } from '../../utils/response/errorResponse'
 import { db } from '../../db'
 import { User } from '../../entity/user/User'
 
-export const me = async (req: Request, res: Response, next: NextFunction) => {
+export const getMyProfile = async (req: Request, res: Response, next: NextFunction) => {
     const { jwtPayload } = req
 
     const userRepository = db.getRepository(User)
@@ -13,6 +13,9 @@ export const me = async (req: Request, res: Response, next: NextFunction) => {
         const user = await userRepository
             .createQueryBuilder('user')
             .where('user.username = :username', { username: jwtPayload.username })
+            .addSelect('user.cover_image')
+            .addSelect('user.description')
+            .addSelect('user.dob')
             .getOne()
 
         if (!user) {

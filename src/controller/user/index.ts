@@ -1,2 +1,6 @@
 export * from './get'
-export * from './me'
+export * from './getMyProfile'
+export * from './update'
+export * from './follow'
+export * from './unfollow'
+export * from './getPopularUsers'

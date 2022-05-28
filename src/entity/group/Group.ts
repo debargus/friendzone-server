@@ -40,6 +40,9 @@ export class Group extends BaseEntity {
     @Column({ default: 0 })
     members_count: number
 
+    @Column({ default: 0 })
+    posts_count: number
+
     @Column({ default: 0, select: false })
     join_request_count: number
 

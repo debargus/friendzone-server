@@ -13,6 +13,11 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
         const user = await userRepository
             .createQueryBuilder('user')
             .where('user.username = :username', { username: id })
+            .addSelect('user.cover_image')
+            .addSelect('user.description')
+            .addSelect('user.dob')
+            .loadRelationCountAndMap('user.followers_count', 'user.followers', 'followers_count')
+            .loadRelationCountAndMap('user.following_count', 'user.followings', 'following_count')
             .getOne()
 
         if (!user) {
