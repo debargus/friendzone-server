@@ -3,6 +3,7 @@ import { Router } from 'express'
 import {
 	addHot,
 	create,
+	deleteComment,
 	deletePost,
 	downvote,
 	get,
@@ -32,10 +33,11 @@ router.delete('/:id/hot', [authGuard], removeHot)
 router.put('/:id/update', [authGuard], update)
 router.get('/:id', [jwtTokenAppend], get)
 router.delete('/:id', [authGuard], deletePost)
-router.get('/user/:user_id', getUserPosts)
+router.get('/user/:user_id', [jwtTokenAppend], getUserPosts)
 router.get('/group/:id/public', [jwtTokenAppend], getAllPublicGroupPosts)
 router.get('/group/:id/all', [authGuard, jwtTokenAppend], getAllGroupPosts)
 router.post('/', [authGuard], create)
 router.post('/comment', [authGuard], postComment)
+router.delete('/comment/:id', [authGuard], deleteComment)
 
 export default router

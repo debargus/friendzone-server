@@ -14,6 +14,15 @@ export const getMyPosts = async (req: Request, res: Response, next: NextFunction
             .createQueryBuilder('post')
             .leftJoinAndSelect('post.author', 'author')
             .leftJoinAndSelect('post.group', 'group')
+            .leftJoinAndMapOne('post.my_upvote', 'post.upvotes', 'upvote', 'upvote.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
+            .leftJoinAndMapOne('post.my_downvote', 'post.downvotes', 'downvote', 'downvote.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
+            .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
             .where('author.id = :author_id', { author_id: jwtPayload.id })
             .getMany()
 

@@ -18,7 +18,7 @@ export const deletePost = async (req: Request, res: Response, next: NextFunction
             .execute()
 
         if (deleteResponse.affected === 0) {
-            const customError = new ErrorResponse(500, 'failed to delete post')
+            const customError = new ErrorResponse(500, 'post not deleted')
             return next(customError)
         }
 

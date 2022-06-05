@@ -3,6 +3,7 @@ import auth from './auth'
 import post from './post'
 import group from './group'
 import user from './user'
+import message from './message'
 import { authGuard } from '../middleware/authGuard'
 import { getPreSignedUrl } from '../controller/shared'
 
@@ -12,6 +13,7 @@ router.use(`/auth`, auth)
 router.use(`/post`, post)
 router.use(`/group`, group)
 router.use(`/user`, user)
+router.use(`/message`, message)
 
 router.get('/getuploadurl', [authGuard], getPreSignedUrl)
 

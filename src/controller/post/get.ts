@@ -6,6 +6,7 @@ import { Post } from '../../entity/post/Post'
 
 export const get = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
+    const { jwtPayload } = req
 
     const postRepository = db.getRepository(Post)
 
@@ -17,6 +18,15 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
             .leftJoinAndSelect('post.group', 'group')
             .leftJoinAndSelect('post.comments', 'comments')
             .leftJoinAndSelect('comments.author', 'comment_author')
+            .leftJoinAndMapOne('post.my_upvote', 'post.upvotes', 'upvote', 'upvote.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
+            .leftJoinAndMapOne('post.my_downvote', 'post.downvotes', 'downvote', 'downvote.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
+            .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
             .getOne()
 
         if (!post) {

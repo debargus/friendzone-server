@@ -16,6 +16,7 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
         const post = await postRepository
             .createQueryBuilder('post')
             .leftJoinAndSelect('post.author', 'author')
+            .leftJoinAndSelect('post.comments', 'comment')
             .where('post.id = :post_id', { post_id })
             .andWhere('author.id = :author_id', { author_id: jwtPayload.id })
             .getOne()
@@ -28,10 +29,9 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
         const updateObj = {
             ...(content && { content }),
             ...(is_public !== undefined && { is_public }),
-            is_updated: true
+            is_updated: true,
+            comments_count: post.comments.length
         }
-
-        console.log('updateObj', updateObj)
 
         await db.createQueryBuilder().update(Post).set(updateObj).where('id = :post_id', { post_id }).execute()
 

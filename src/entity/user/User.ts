@@ -14,6 +14,8 @@ import { Upvote } from '../upvote/Upvote'
 import { Comment } from '../comment/Comment'
 import { Hot } from '../hot/Hot'
 import { UserFollow } from '../follow/UserFollow'
+import { Message } from '../message/Message'
+import { Conversation } from '../conversation/Conversation'
 
 @Entity()
 export class User extends BaseEntity {
@@ -75,6 +77,12 @@ export class User extends BaseEntity {
 
     @OneToMany(() => UserFollow, (follow) => follow.follower)
     followings: UserFollow[]
+
+    @OneToMany(() => Conversation, (conversation) => conversation.creator)
+    conversations: Conversation[]
+
+    @OneToMany(() => Message, (message) => message.sender)
+    messages: Message[]
 
     saveHashedPassword(password: string) {
         this.password = bcrypt.hashSync(password, 8)

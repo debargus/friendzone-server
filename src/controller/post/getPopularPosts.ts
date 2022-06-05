@@ -28,6 +28,21 @@ export const getPopularPosts = async (req: Request, res: Response, next: NextFun
                 .orWhere('post.group_id IN (:...group_ids)', { group_ids: userGroupIds })
                 .leftJoinAndSelect('post.author', 'author')
                 .leftJoinAndSelect('post.group', 'group')
+                .leftJoinAndMapOne('post.my_upvote', 'post.upvotes', 'upvote', 'upvote.author_id = :author_id', {
+                    author_id: jwtPayload?.id
+                })
+                .leftJoinAndMapOne(
+                    'post.my_downvote',
+                    'post.downvotes',
+                    'downvote',
+                    'downvote.author_id = :author_id',
+                    {
+                        author_id: jwtPayload?.id
+                    }
+                )
+                .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
+                    author_id: jwtPayload?.id
+                })
                 .getMany()
 
             res.customSuccess(200, '', { posts })
@@ -38,6 +53,18 @@ export const getPopularPosts = async (req: Request, res: Response, next: NextFun
                 .andWhere('post.is_public = :is_public', { is_public: true })
                 .leftJoinAndSelect('post.author', 'author')
                 .leftJoinAndSelect('post.group', 'group')
+                .leftJoinAndMapOne('post.my_upvote', 'post.upvotes', 'upvote', 'upvote.author_id = :author_id', {
+                    author_id: jwtPayload?.id
+                })
+                .leftJoinAndMapOne(
+                    'post.my_downvote',
+                    'post.downvotes',
+                    'downvote',
+                    'downvote.author_id = :author_id',
+                    {
+                        author_id: jwtPayload?.id
+                    }
+                )
                 .getMany()
 
             res.customSuccess(200, '', { posts })
