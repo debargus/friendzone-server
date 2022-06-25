@@ -27,6 +27,9 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
             .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
                 author_id: jwtPayload?.id
             })
+            .leftJoinAndMapOne('post.my_bookmark', 'post.bookmarks', 'bookmark', 'bookmark.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
             .getOne()
 
         if (!post) {

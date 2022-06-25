@@ -26,6 +26,9 @@ export const getAllGroupPosts = async (req: Request, res: Response, next: NextFu
             .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
                 author_id: jwtPayload?.id
             })
+            .leftJoinAndMapOne('post.my_bookmark', 'post.bookmarks', 'bookmark', 'bookmark.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
             .where('post.group_id = :group_id', { group_id: id })
             .andWhere('member.id = :member_id', { member_id: jwtPayload.id })
             .getMany()
@@ -48,6 +51,9 @@ export const getAllGroupPosts = async (req: Request, res: Response, next: NextFu
                 author_id: jwtPayload?.id
             })
             .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
+                author_id: jwtPayload?.id
+            })
+            .leftJoinAndMapOne('post.my_bookmark', 'post.bookmarks', 'bookmark', 'bookmark.author_id = :author_id', {
                 author_id: jwtPayload?.id
             })
             .getMany()

@@ -16,8 +16,6 @@ export const upvote = async (req: Request, res: Response, next: NextFunction) =>
     const upvoteRepository = db.getRepository(Upvote)
     const downvoteRepository = db.getRepository(Downvote)
 
-    console.log('hellop')
-
     try {
         const user = await userRepository
             .createQueryBuilder('user')

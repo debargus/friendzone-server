@@ -9,6 +9,7 @@ import {
     ManyToOne,
     JoinColumn
 } from 'typeorm'
+import { Bookmark } from '../bookmark/Bookmark'
 import { Comment } from '../comment/Comment'
 import { Downvote } from '../downvote/Downvote'
 import { Group } from '../group/Group'
@@ -69,4 +70,7 @@ export class Post extends BaseEntity {
 
     @OneToMany(() => Hot, (hot) => hot.post)
     hots: Hot[]
+
+    @OneToMany(() => Bookmark, (bookmark) => bookmark.post)
+    bookmarks: Bookmark[]
 }

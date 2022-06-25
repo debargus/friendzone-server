@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm'
+import { Bookmark } from '../entity/bookmark/Bookmark'
 import { Comment } from '../entity/comment/Comment'
 import { Conversation } from '../entity/conversation/Conversation'
 import { Downvote } from '../entity/downvote/Downvote'
@@ -17,7 +18,7 @@ export const db = new DataSource({
     username: process.env.TYPEORM_DB_USERNAME,
     password: process.env.TYPEORM_DB_PASSWORD,
     database: process.env.TYPEORM_DB_NAME,
-    entities: [User, Post, Upvote, Downvote, Group, Comment, Hot, UserFollow, Conversation, Message],
+    entities: [User, Post, Upvote, Downvote, Group, Comment, Hot, UserFollow, Conversation, Message, Bookmark],
     logging: process.env.NODE_ENV !== 'production' && true,
     synchronize: process.env.NODE_ENV !== 'production' && true
 })

@@ -43,6 +43,15 @@ export const getPopularPosts = async (req: Request, res: Response, next: NextFun
                 .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
                     author_id: jwtPayload?.id
                 })
+                .leftJoinAndMapOne(
+                    'post.my_bookmark',
+                    'post.bookmarks',
+                    'bookmark',
+                    'bookmark.author_id = :author_id',
+                    {
+                        author_id: jwtPayload?.id
+                    }
+                )
                 .getMany()
 
             res.customSuccess(200, '', { posts })
@@ -61,6 +70,18 @@ export const getPopularPosts = async (req: Request, res: Response, next: NextFun
                     'post.downvotes',
                     'downvote',
                     'downvote.author_id = :author_id',
+                    {
+                        author_id: jwtPayload?.id
+                    }
+                )
+                .leftJoinAndMapOne('post.my_hot', 'post.hots', 'hot', 'hot.author_id = :author_id', {
+                    author_id: jwtPayload?.id
+                })
+                .leftJoinAndMapOne(
+                    'post.my_bookmark',
+                    'post.bookmarks',
+                    'bookmark',
+                    'bookmark.author_id = :author_id',
                     {
                         author_id: jwtPayload?.id
                     }

@@ -16,6 +16,7 @@ import { Hot } from '../hot/Hot'
 import { UserFollow } from '../follow/UserFollow'
 import { Message } from '../message/Message'
 import { Conversation } from '../conversation/Conversation'
+import { Bookmark } from '../bookmark/Bookmark'
 
 @Entity()
 export class User extends BaseEntity {
@@ -83,6 +84,9 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Message, (message) => message.sender)
     messages: Message[]
+
+    @OneToMany(() => Bookmark, (bookmark) => bookmark.post)
+    bookmarks: Bookmark[]
 
     saveHashedPassword(password: string) {
         this.password = bcrypt.hashSync(password, 8)
