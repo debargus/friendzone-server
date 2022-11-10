@@ -13,6 +13,7 @@ export const getUserPosts = async (req: Request, res: Response, next: NextFuncti
     try {
         const posts = await postRepository
             .createQueryBuilder('post')
+            .orderBy('post.created_at', 'DESC')
             .leftJoinAndSelect('post.author', 'author')
             .leftJoinAndSelect('post.group', 'group')
             .leftJoinAndMapOne('post.my_upvote', 'post.upvotes', 'upvote', 'upvote.author_id = :author_id', {
